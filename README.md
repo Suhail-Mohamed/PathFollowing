@@ -1,6 +1,7 @@
 # PathFollowing
 
-Simple path following using 2d physics and Dijkstras algorithm.
+Simple path following using 2d physics and Dijkstras algorithm
+
 Controls:
   - C clears
   - G toggle between placing goal and not placing goal
