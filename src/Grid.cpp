@@ -214,13 +214,13 @@ bool Grid::hasCollided(const sf::RectangleShape& obstacle,
             obsProjection = {INFINITY, -INFINITY};
             vehProjection = {INFINITY, -INFINITY};
 
-            for (auto& v : obsVert) {
+            for (const auto& v : obsVert) {
                 const float dotPrd   = dot(nrmlAxis, v); /* Dot product is a projection of vectors */
                 obsProjection.first  = std::min(obsProjection.first , dotPrd);
                 obsProjection.second = std::max(obsProjection.second, dotPrd);
             }
 
-            for (auto& v : vehVert) {
+            for (const auto& v : vehVert) {
                 const float dotPrd   = dot(nrmlAxis, v);
                 vehProjection.first  = std::min(vehProjection.first , dotPrd);
                 vehProjection.second = std::max(vehProjection.second, dotPrd);
