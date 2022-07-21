@@ -16,6 +16,13 @@
 static constexpr int WEIGHT_STRAIGHT = 1; /* The distance between two axis aligned grid Nodes */
 static constexpr int WEIGHT_DIAG     = 2; /* The distance between two non-axis aligned grid Nodes */
 static constexpr int CIRCLE_RAD      = 3;
+
+/* Used for accessing parts of the dirs std::array */
+static constexpr int DIR_ROW_SIZE    = 2; 
+static constexpr int DIR_COL_SIZE    = 5;
+static constexpr int NSEW_DIRS       = 0; 
+static constexpr int DIAG_DIRS       = 1;
+
 const sf::Color GRAY (128, 128, 128);
 
 struct DebugNode {
@@ -65,17 +72,11 @@ class Grid {
                                  const std::vector<sf::Vector2f>& vehVert);
         void         createOptimalPath(sf::Vector2i start);
 
-
         std::vector<std::vector<Node>>      gridNodes;
         std::vector<std::vector<DebugNode>> debug;
         Vehicle                             vehicle;
         sf::Vector2i                        goalPos = {OUT_OF_BOUNDS, OUT_OF_BOUNDS};
         
-        const int DIR_ROW_SIZE = 2;
-        const int DIR_COL_SIZE = 5;
-        const int NSEW_DIRS    = 0; 
-        const int DIAG_DIRS    = 1;
-
         const std::array<std::array<int, 5>, 2> dirs {{{0, 1,  0, -1, 0},   // used for checking down (0, 1), right(1, 0), up(0, -1) and left (-1, 0) from some spot in grid
                                                        {1, 1, -1, -1, 1}}}; // used for checking upperRight(1, 1), lowerRight(1, -1), lowerLeft(-1. -1) and upperLeft
 };

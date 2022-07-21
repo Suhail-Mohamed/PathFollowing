@@ -23,6 +23,9 @@ void Vehicle::moveVehicle() {
 
 /****************************************************************************/
 
+/*
+    Makes the vehicle seek to a point, ie: go towards it but in a natural way
+*/
 void Vehicle::seek(const sf::Vector2f point, const bool arrive) {
     /* steering = desired velocity - current velocity */
     sf::Vector2f desired = point - shape.getPosition();
@@ -79,16 +82,13 @@ int Vehicle::followPath() {
         auto normPoint = getNormalizedPoint(futPos, a, b);
         
         /*
-            Checking if normal point is NOT on the line (a, b). btw this line is either 
-            horizontal -> a ----- b or vertical -> | b
-                                                   |
-                                                   | a
+            Checking if normal point is NOT on the line (a, b).
             This happens at hard turns example:
                 
-               * <- closest perp, still close path vertice is b
+               * <- closest perp, still closes path vertice is b
                b ___________________ .... [Goal]
                |
-               * <- vehicle position here, if vehicle is moving up straight
+               V <- vehicle position here, if vehicle is moving up straight
                |    its closest perp will always be a little past point b
                |    although we want to continue following path instead of 
                |    moving towards vertice b
@@ -106,16 +106,25 @@ int Vehicle::followPath() {
         if (const float dist = distance(normPoint, futPos);
             dist < closest) {
             closest = dist;
+            /* Target is a point on path (a, b) that is a little in front of the vehicle  */
             target  = normPoint + (normalizeVector(b - a) * 10.0f);
             idx     = i;
         }
     }
 
+    /* 
+        If the edge closest to use is the last edge then we will seek to it and do a special animation
+        hence the boolean flag
+        Otherwise if our smallest normal is still to far away or the vehicle is moving too slowly
+        we will seek to our calculated target, otherwise of all things are good we will keep moving
+        the vehicle with its current velocity 
+    */
     if (idx == path.size() - 2)
         seek(path.back(), true);
-    else (closest > PATH_RADIUS ||
-          magnitude(velocity) < 1.0f) ? seek(target) : 
-                                        moveVehicle();
+    else 
+        (closest > PATH_RADIUS || 
+        magnitude(velocity) < 1.0f) ? seek(target) : 
+                                      moveVehicle();
     return idx + 1;
 }
 

@@ -6,14 +6,16 @@ Simulator::Simulator() :
 {
     window.setFramerateLimit(60);
 
-    if (!font.loadFromFile("C:\\Windows\\Fonts\\Comic.ttf"))
-        throw "Failed to load Font";
+    if (!font.loadFromFile("/usr/share/fonts/liberation-mono/LiberationMono-Regular.ttf"))
+        throw "Failed to load Font, Check Simulator.cpp File line 10";
 
     displayMsg.setFont(font);
-    displayMsg.setCharacterSize(18);
+    displayMsg.setCharacterSize(15);
     displayMsg.setPosition({500, 0});
     setTextnColor(sf::Color::Red);
 }
+
+/*****************************************************************************/
 
 void Simulator::startSimulation() {
     while (window.isOpen()) {
@@ -52,6 +54,7 @@ void Simulator::startSimulation() {
 }
 
 /*****************************************************************************/
+
 /*
     If Colour red set display message to Currently not placing goal in red colour
     if green set display message to placing goal in green colour

@@ -33,6 +33,7 @@ void Grid::draw(sf::RenderWindow& window) {
 
             debug[x][y].unHighlight();
 
+            /* Highlight the closest node in purple */
             if (sf::Vector2i{x, y} == closestDNode)
                 debug[x][y].highlight();
             
@@ -51,6 +52,12 @@ void Grid::draw(sf::RenderWindow& window) {
 
 /*****************************************************************************/
 
+/*
+    Adds or removes an obstacle (or goal) depending on if the position on the grid already has a obstacle.
+    Special case is if we are drawing obstacle, by drawing I mean repeatedly placing an obstacle where ever
+    the mouse position is, for this we want to skip on the removals as it will cause an erasing effect
+    which is unwanted.
+*/
 void Grid::addObstacleOrGoal(const sf::Vector2f position, bool isGoal, bool isDrawing) {
     const sf::Vector2i coord = getClosestNode(position);
 
@@ -58,6 +65,7 @@ void Grid::addObstacleOrGoal(const sf::Vector2f position, bool isGoal, bool isDr
     
     Node& node = gridNodes[coord.x][coord.y];
     
+    /* If there is no node at the spot clicked then we are placing something here */
     if (!node.renderSquare) {
         resetGrid(false);
         node.renderSquare = true;
@@ -70,8 +78,8 @@ void Grid::addObstacleOrGoal(const sf::Vector2f position, bool isGoal, bool isDr
             node.obstacle.setFillColor(sf::Color::Green);
             createOptimalPath(getClosestNode(vehicle.shape.getPosition()));
         }
-    } else {
-        if (isDrawing) return;
+    } else { /* There is a node where we are placing our obstacle (or goal), so remove it */
+        if (isDrawing) return; /* If we are drawing obstacles skip removal */
         node.renderSquare = false;
         node.prev         = {OUT_OF_BOUNDS, OUT_OF_BOUNDS};
         node.weight       = INFINITY;
@@ -89,8 +97,9 @@ void Grid::addObstacleOrGoal(const sf::Vector2f position, bool isGoal, bool isDr
 }
 
 /*****************************************************************************/
+
 /*
-    hardReset --> removes all obstacles and lines are board
+    hardReset --> removes all obstacles and lines on board
                   done when user presses 'C'
     softReset --> removes all lines but not obstacles
                   done before the creation of any path
@@ -129,6 +138,7 @@ sf::Vector2i Grid::getClosestNode(const sf::Vector2f position) {
 
 /*****************************************************************************/
 
+/* Checks whether a collsison has occured between a vehicle 8 of the vlosest obstacles to it */
 void Grid::checkCollisions(const sf::Vector2i& closestObstacle) {
     /* 
         All this loop does is check all eight areas around our vehicle

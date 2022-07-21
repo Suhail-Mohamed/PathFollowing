@@ -1,10 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
 #include <vector>
 #include <array>
 #include <iostream>
+
+#include <SFML/Graphics.hpp>
 
 #include "Util.hpp"
 #include "Node.hpp"
