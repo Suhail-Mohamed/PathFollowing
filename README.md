@@ -14,6 +14,6 @@ Controls:
 # Compilation
   Linux based
   - Download SFML using distros package manager
-  - run mkdir binaries
-  - Go to project folder and run: make run
-  - When done run: make clean
+  - run `mkdir binaries`
+  - Go to project folder and run: `make run`
+  - When done run: `make clean`
